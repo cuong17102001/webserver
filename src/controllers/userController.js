@@ -19,6 +19,12 @@ let handleLogin = async(req , res) =>{
     })
 }
 
+let test = (req , res)=>{
+    return res.status(200).json({
+        h:"heelo"
+    })
+}
 module.exports = {
   handleLogin : handleLogin,
+test:test
 }

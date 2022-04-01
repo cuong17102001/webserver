@@ -3,12 +3,13 @@ import bodyParser from "body-parser";
 import viewEngine from "./config/viewEngine";
 import initWebRoutes from "./route/web";
 import connectDB from "./config/connectDB";
-import cors from "cors";
+
+import cors from 'cors';
 
 require("dotenv").config();
 
 let app = express();
-
+app.use(cors({credentials: true, origin: process.env.REACT_URL}));
 
 
 //config app
@@ -24,29 +25,6 @@ connectDB();
 
 
 
-const corsOpts = {
-    origin: '*',
-  
-    methods: [
-      'GET',
-      'POST',
-    ],
-  
-    allowedHeaders: [
-      'Content-Type',
-    ],
-  };
-app.use(cors(corsOpts));
-app.use(function(req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', process.env.REACT_URL);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-  });
-
-
-  
 let port = process.env.PORT || 6969;
 
 
