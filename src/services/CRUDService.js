@@ -30,7 +30,7 @@ let hashUserPassword = (password)=>{
             var hashPassword = await bcrypt.hashSync(password , salt);
             resolve(hashPassword);
         } catch (error) {
-            rejcet(e);
+            rejcet(error);
         }
     });
 }
