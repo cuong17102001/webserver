@@ -108,23 +108,23 @@ let createNewUser = (data)=>{
                     errCode : 1,
                     message : "your email exist"
                 });
+            }else{
+                let hashPasswordFromBcrypt = await hashUserPassword(data.password);
+                await db.User.create({
+                    email: data.email,
+                    password: hashPasswordFromBcrypt,
+                    firstName: data.firstname,
+                    lastName: data.lastname,
+                    address : data.address,
+                    phonenumber: data.phonenumber,
+                    gender: data.gender ==="1" ? true : false,
+                    roleId: data.roleId,
+                });
+                resolve({
+                    errCode : 0,
+                    message : "OK"
+                });
             }
-
-            let hashPasswordFromBcrypt = await hashUserPassword(data.password);
-            await db.User.create({
-                email: data.email,
-                password: hashPasswordFromBcrypt,
-                firstName: data.firstname,
-                lastName: data.lastname,
-                address : data.address,
-                phonenumber: data.phonenumber,
-                gender: data.gender ==="1" ? true : false,
-                roleId: data.roleId,
-            });
-            resolve({
-                errCode : 0,
-                message : "OK"
-            });
         } catch (error) {
             reject(error)
         }
@@ -193,10 +193,37 @@ let updateUserData = (data) =>{
         }
     })
 }
+
+let getAllCodeService = (typeInput)=>{
+    return new Promise( async(resolve , reject) => {
+        try {
+
+            if (!typeInput) {
+                resolve({
+                    errCode : 1,
+                    errMessage : "missing param"
+                })
+            } else {
+                let data = {};
+
+                let allcode = await db.Allcode.findAll({
+                    where : {type : typeInput}
+                });
+                data.errCode = 0
+                data.data = allcode;
+                resolve(data);
+            }
+           
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
     handleUserLogin:handleUserLogin,
     getAllUser : getAllUser,
     createNewUser : createNewUser,
     deleteUser : deleteUser,
-    updateUserData : updateUserData
+    updateUserData : updateUserData,
+    getAllCodeService:getAllCodeService
 }
